@@ -24,7 +24,7 @@
                                                         {{article.description}}
                                                 </td>
                                                 <td>
-                                                        <router-link :to="`/article/${article.id}`">View</router-link>
+                                                        <router-link :to="`/articles/${article.id}`">View</router-link>
                                                 </td>
                                         </tr>
                                 </template>

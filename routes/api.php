@@ -23,6 +23,15 @@ Route::group([ 'prefix' => 'auth' ], function ($router) {
 
 });
 
+Route::group([ 'middleware' => 'jwt.auth' ], function ($router) {
+
+    Route::get('articles', 'ArticleController@index');
+    Route::post('articles', 'ArticleController@store');
+    Route::get('articles/{id}', 'ArticleController@get');
+    
+});
+
+
 // Route::get('quantities', ['middleware' => 'cors' , 'quantities'=> 'QuantityController@index']);
 // quantities routes
 Route::get('quantities', 'QuantityController@index');
@@ -31,9 +40,5 @@ Route::post('quantities', 'QuantityController@store');
 Route::get('quantities-history/{day?}/{month?}/{year?}','QuantityController@history');
 // Route::get('events/{year?}/{month?}/{day?}', 'EventController@show')
 // products routes
-Route::get('articles', 'ArticleController@index');
-Route::post('articles', 'ArticleController@store');
 Route::put('articles/{article}', 'ArticleController@update');
 Route::delete('articles/{article}', 'ArticleController@delete');
-
-Route::get('articles/{id}', 'ArticleController@get');

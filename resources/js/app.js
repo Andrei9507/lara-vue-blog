@@ -10,7 +10,9 @@ import Navbar from './components/Navbar.vue';
 import store from './store'
 import axios from 'axios';
 import {initialize} from './helpers/authChecks';
+import Vuelidate from 'vuelidate';
 
+Vue.use(Vuelidate);
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.component('navbar', Navbar);

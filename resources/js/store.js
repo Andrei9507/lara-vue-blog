@@ -65,8 +65,13 @@ export default new Vuex.Store({
       commit('logout');
     },
 
-    getArticles({commit}) {
-      axios.get('http://localhost:8000/api/articles')
+    getArticles({commit, state}) {
+      // console.log(state.currentUser.user.token);
+      axios.get('/api/articles', {
+        headers: {
+          "Authorization": `Bearer ${state.currentUser.user.token}`
+        }
+      })
             .then(function (response) {
               // handle success
               commit('updateArticles', response.data.articles);
@@ -77,9 +82,13 @@ export default new Vuex.Store({
             })
     },
 
-    storeArticle ({commit}, article) {
+    storeArticle ({commit, state}, article) {
     
-        axios.post('http://localhost:8000/api/articles', article)
+        axios.post('http://localhost:8000/api/articles', article, {
+          headers: {
+            "Authorization": `Bearer ${state.currentUser.user.token}`
+          } 
+        })
           .then(res => console.log(res))
           .catch(error => console.log(error))
     },

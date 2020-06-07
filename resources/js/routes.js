@@ -32,25 +32,28 @@ export const routes =  [
                 path:'/login',
                 component: Login
         },
-        // {
-        //         path: '/articles',
-        //         component: Articles,
-        //         children: [
-        //                 {
-        //                         path: '/',
-        //                         component: ArticlesList
-        //                 },
-        //                 {
-        //                         path: 'new',
-        //                         component: NewArticle
-        //                 },
-        //                 {
-        //                         path:':id',
-        //                         component: Article
-        //                 }
+        {
+                path: '/articles',
+                component: Articles,
+                meta: {
+                        requiresAuth: true
+                },
+                children: [
+                        {
+                                path: '/',
+                                component: ArticlesList
+                        },
+                        {
+                                path: 'new',
+                                component: NewArticle
+                        },
+                        {
+                                path:':id',
+                                component: Article
+                        }
 
-        //         ]
-        // }
+                ]
+        }
 
 
 ];
