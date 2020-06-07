@@ -23,7 +23,7 @@
                                 </li>
                                
                                 <li >
-                                        <a  @click.prevent="onLogout" class="nav-link ">Logout</a>
+                                        <a  @click.prevent="onLogout" class="btn nav-link ">Logout</a>
                                 </li>
                         </template>
                        
@@ -49,7 +49,7 @@ export default {
         methods: {
                 onLogout() {
                         this.$store.dispatch('logout');
-                        this.$router.push('/login');
+                        this.$router.go('/login');
                 }
         }
 }

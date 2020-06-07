@@ -8,6 +8,8 @@ import Vuex from 'vuex'
 import {routes} from './routes';
 import Navbar from './components/Navbar.vue';
 import store from './store'
+import axios from 'axios';
+import {initialize} from './helpers/authChecks';
 
 Vue.use(VueRouter);
 Vue.use(Vuex);
@@ -19,23 +21,10 @@ const router = new VueRouter({
 
 });
 
-router.beforeEach((to, from, next) => {
-        
-        const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
-        const currentUser = store.state.currentUser;
+initialize(store, router);
 
-        console.log(requiresAuth);
-        console.log( currentUser);
-        if(requiresAuth && currentUser.user == null) {
-                next('/login');
-        } else if(to.path == '/login' && currentUser.user )
-        {
-                next('/');
-        } else {
-                next();
-        }
 
-})
+
 
 
 const app = new Vue({
