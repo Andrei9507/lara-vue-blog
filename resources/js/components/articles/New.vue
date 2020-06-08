@@ -24,6 +24,7 @@
                                 rows="3"
                                 id="description"
                                 v-model="description"
+                                placeholder="Description"
                                 ></textarea>
                                 <p v-if="!$v.description.required">This field must not be empty </p>
                                 <p v-if="!$v.description.minLen">Please insert more text</p>

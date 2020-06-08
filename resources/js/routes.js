@@ -3,6 +3,7 @@ import Home from './components/Home.vue';
 import Articles from './components/articles/Articles.vue';
 import ArticlesList from './components/articles/List.vue';
 import NewArticle from './components/articles/New.vue';
+import EditArticle from './components/articles/Edit.vue';
 import Article from './components/articles/Article.vue';
 import Login from './components/auth/Login.vue';
 import store from './store';
@@ -50,7 +51,11 @@ export const routes =  [
                         {
                                 path:':id',
                                 component: Article
-                        }
+                        },
+                        {
+                                path:'edit/:id',
+                                component: EditArticle
+                        },
 
                 ]
         }

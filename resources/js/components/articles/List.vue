@@ -25,6 +25,7 @@
                                                 </td>
                                                 <td>
                                                         <router-link :to="`/articles/${article.id}`">View</router-link>
+                                                         <router-link :to="`/articles/edit/${article.id}`">Edit</router-link>
                                                 </td>
                                         </tr>
                                 </template>

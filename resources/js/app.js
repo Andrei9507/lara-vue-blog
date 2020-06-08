@@ -8,7 +8,6 @@ import Vuex from 'vuex'
 import {routes} from './routes';
 import Navbar from './components/Navbar.vue';
 import store from './store'
-import axios from 'axios';
 import {initialize} from './helpers/authChecks';
 import Vuelidate from 'vuelidate';
 
@@ -25,7 +24,7 @@ const router = new VueRouter({
 
 initialize(store, router);
 
-
+// Continue with view article and tutorial
 
 
 

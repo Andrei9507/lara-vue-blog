@@ -54,6 +54,10 @@ export default new Vuex.Store({
     storeArticle(state, article) {
       state.article = article;
     },
+
+    updateArticle(state, article) {
+      state.article = article;
+    }
   },
   actions: {
 
@@ -66,7 +70,7 @@ export default new Vuex.Store({
     },
 
     getArticles({commit, state}) {
-      // console.log(state.currentUser.user.token);
+      
       axios.get('/api/articles', {
         headers: {
           "Authorization": `Bearer ${state.currentUser.user.token}`
@@ -92,10 +96,50 @@ export default new Vuex.Store({
           .then(res => console.log(res))
           .catch(error => console.log(error))
     },
+
+    getArticle({commit, state}, article){
+     
+      axios.get('/api/articles/'+ article, {
+        headers: {
+          "Authorization": `Bearer ${state.currentUser.user.token}`
+        }
+      })
+            .then(function (response) {
+              // handle success
+              console.log(response.data);
+              commit('updateArticle', response.data.article);
+            })
+            .catch(function (error) {
+              // handle error
+              console.log(error);
+            })
+    },
+
+    updateArticle({commit, state}, article){
+      console.log(article);
+      axios.put('/api/articles/'+article.id, article, {
+        headers: {
+          "Authorization": `Bearer ${state.currentUser.user.token}`
+        }
+      })
+      .then(function (response) {
+        // handle success
+        console.log(response.data);
+        commit('updateArticle', response.data.article);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+    }
   },
   getters:{
       articles(state) {
         return state.articles;
+      },
+
+      article(state) {
+        return state.article;
       },
 
       isLoading(state) {
@@ -112,7 +156,7 @@ export default new Vuex.Store({
 
       authError(state) {
         return state.auth_error;
-      }
+      },
 
   }
 
