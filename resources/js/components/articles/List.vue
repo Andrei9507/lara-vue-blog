@@ -38,11 +38,16 @@
 export default {
         name:'list',
         mounted() {
+                if(this.articles.length){
+                        console.log("im not appended request")
+                        return;
+                }
                 this.$store.dispatch('getArticles');
                 
         },
         computed: {
                 articles() {
+                        // console.log(this.$store.getters.articles)
                         return this.$store.getters.articles;
                 }
         }

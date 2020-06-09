@@ -2049,26 +2049,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     // if(this.articles.length) {
     //         this.article = this.articles.find((article) => articles.id == this.$route.params.id);
     // } else {
-    // repair this to dont make one more request
-    this.$store.dispatch('getArticle', this.$route.params.id); // }
+    // repair this to dont make one more
+    this.$store.dispatch('getArticle', this.$route.params.id);
+    this.$store.dispatch('getAuthors'); // console.log('this'+this.$store.getters.articles);
+    // }
   },
-  // data(){
-  //         // return {
-  //         //         article: null
-  //         // };
-  // },
+  data: function data() {
+    return {
+      author: ''
+    };
+  },
   computed: {
     article: function article() {
       return this.$store.getters.article;
     },
     articles: function articles() {
       return this.$store.getters.articles;
-    }
+    },
+    comments: function comments() {
+      return this.$store.getters.article.comments;
+    },
+    authors: function authors() {
+      return this.$store.getters.authors;
+    } // author(){
+    //         return this.$store.getters.authors.find((author) => author.id == this.$store.getters.article.comments.user_id )
+    //         console.log("hello", author)
+    // }
+
   }
 });
 
@@ -2263,10 +2285,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'list',
   mounted: function mounted() {
+    if (this.articles.length) {
+      console.log("im not appended request");
+      return;
+    }
+
     this.$store.dispatch('getArticles');
   },
   computed: {
     articles: function articles() {
+      // console.log(this.$store.getters.articles)
       return this.$store.getters.articles;
     }
   }
@@ -38900,13 +38928,49 @@ var render = function() {
             _c("div", [_vm._v(_vm._s(_vm.article.description))])
           ]),
           _vm._v(" "),
+          _vm._l(_vm.comments, function(comment) {
+            return _c(
+              "p",
+              { key: comment.id },
+              [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(comment.comment) +
+                    "\n                "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n                " +
+                    _vm._s(
+                      (_vm.author = _vm.authors.find(function(author) {
+                        return author.id == comment.user_id
+                      }))
+                    ) +
+                    "\n                "
+                ),
+                _c("br"),
+                _vm._v(" "),
+                _vm.author
+                  ? [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(_vm.author.name) +
+                          " \n                "
+                      )
+                    ]
+                  : _vm._e()
+              ],
+              2
+            )
+          }),
+          _vm._v(" "),
           _c(
             "router-link",
             { staticClass: "btn btn-danger", attrs: { to: "/articles" } },
             [_vm._v("Back")]
           )
         ],
-        1
+        2
       )
     : _vm._e()
 }
@@ -58593,7 +58657,8 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     loading: false,
     auth_error: null,
     articles: [],
-    article: null
+    article: null,
+    authors: []
   },
   mutations: {
     login: function login(state) {
@@ -58621,13 +58686,16 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       state.currentUser = null;
     },
     updateArticles: function updateArticles(state, payload) {
-      state.articles = payload;
+      state.articles = payload; // console.log(state.articles)
     },
-    storeArticle: function storeArticle(state, article) {
-      state.article = article;
+    addStoredArticleToArray: function addStoredArticleToArray(state, article) {
+      state.articles.push(article);
     },
     updateArticle: function updateArticle(state, article) {
       state.article = article;
+    },
+    getAuthors: function getAuthors(state, payload) {
+      state.authors = payload;
     }
   },
   actions: {
@@ -58654,7 +58722,8 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       var commit = _ref4.commit,
           state = _ref4.state;
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://localhost:8000/api/articles', article).then(function (res) {
-        return console.log(res);
+        // console.log(res.data.article);
+        commit('addStoredArticleToArray', res.data.article);
       })["catch"](function (error) {
         return console.log(error);
       });
@@ -58675,11 +58744,22 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     updateArticle: function updateArticle(_ref6, article) {
       var commit = _ref6.commit,
           state = _ref6.state;
-      console.log(article);
+      // console.log(article);
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.put('/api/articles/' + article.id, article).then(function (response) {
         // handle success
-        console.log(response.data);
+        // console.log(response.data);
         commit('updateArticle', response.data.article);
+      })["catch"](function (error) {
+        // handle error
+        console.log(error);
+      });
+    },
+    getAuthors: function getAuthors(_ref7) {
+      var commit = _ref7.commit;
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/users').then(function (response) {
+        // handle success
+        console.log("im from store", response.data);
+        commit('getAuthors', response.data);
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -58687,6 +58767,9 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     }
   },
   getters: {
+    authors: function authors(state) {
+      return state.authors;
+    },
     articles: function articles(state) {
       return state.articles;
     },

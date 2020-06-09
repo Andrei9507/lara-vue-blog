@@ -105,7 +105,7 @@ class ArticleController extends Controller
 
     public function get($id)
     {
-        $article = Article::whereId($id)->first();
+        $article =  $this->article->getItem($id);
 
         return response()->json([
             'article' => $article

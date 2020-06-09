@@ -18,6 +18,7 @@ export default new Vuex.Store({
 
       articles: [],
       article: null,
+      authors: [],
 
   },
   mutations: {
@@ -49,14 +50,19 @@ export default new Vuex.Store({
     
     updateArticles(state, payload) {
       state.articles = payload;
+      // console.log(state.articles)
     },
 
-    storeArticle(state, article) {
-      state.article = article;
+    addStoredArticleToArray(state, article) {
+      state.articles.push(article);
     },
 
     updateArticle(state, article) {
       state.article = article;
+    },
+
+    getAuthors(state, payload) {
+      state.authors = payload;
     }
   },
   actions: {
@@ -86,7 +92,10 @@ export default new Vuex.Store({
     storeArticle ({commit, state}, article) {
     
         axios.post('http://localhost:8000/api/articles', article)
-          .then(res => console.log(res))
+          .then(res => {
+            // console.log(res.data.article);
+            commit('addStoredArticleToArray',res.data.article);
+            })
           .catch(error => console.log(error))
     },
 
@@ -106,20 +115,37 @@ export default new Vuex.Store({
     },
 
     updateArticle({commit, state}, article){
-      console.log(article);
+      // console.log(article);
       axios.put('/api/articles/'+article.id, article)
       .then(function (response) {
         // handle success
-        console.log(response.data);
+        // console.log(response.data);
         commit('updateArticle', response.data.article);
       })
       .catch(function (error) {
         // handle error
         console.log(error);
       })
+    },
+
+    getAuthors({commit}) {
+      axios.get('/api/users')
+            .then(function (response) {
+              // handle success
+              console.log("im from store", response.data)
+              commit('getAuthors', response.data);
+            })
+            .catch(function (error) {
+              // handle error
+              console.log(error);
+            })
     }
   },
   getters:{
+      authors(state){
+        return state.authors;
+      },
+
       articles(state) {
         return state.articles;
       },

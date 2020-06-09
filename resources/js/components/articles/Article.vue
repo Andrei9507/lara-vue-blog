@@ -20,6 +20,16 @@
                         <label for="description">Description</label>
                         <div>{{article.description}}</div>
                 </div>
+                <p v-for="comment in comments" :key="comment.id">
+                        {{comment.comment}}
+                        <br>
+                        {{author = authors.find((author) => author.id == comment.user_id)}}
+                        <br>
+                        <template v-if="author">
+                        {{author.name}} 
+                        </template>
+                </p>
+                <!-- <p v-for="author in authors" :key="author.id+10">{{author.name}}</p> -->
 
               
                 <router-link to="/articles" class="btn btn-danger">Back</router-link>
@@ -32,22 +42,34 @@ export default {
                 // if(this.articles.length) {
                 //         this.article = this.articles.find((article) => articles.id == this.$route.params.id);
                 // } else {
-                        // repair this to dont make one more request
+                        // repair this to dont make one more
                         this.$store.dispatch('getArticle', this.$route.params.id);
+                        this.$store.dispatch('getAuthors');
+                // console.log('this'+this.$store.getters.articles);
                 // }
         },
-        // data(){
-        //         // return {
-        //         //         article: null
-        //         // };
-        // },
+        data() {
+                return {
+                        author: ''
+                };
+        },
          computed: {
                 article() {
                         return this.$store.getters.article;
                 },
                 articles() {
                         return this.$store.getters.articles;
-                }
+                },
+                comments(){
+                        return this.$store.getters.article.comments;
+                },
+                authors(){
+                        return this.$store.getters.authors;
+                }, 
+                // author(){
+                //         return this.$store.getters.authors.find((author) => author.id == this.$store.getters.article.comments.user_id )
+                //         console.log("hello", author)
+                // }
 
 
         }
