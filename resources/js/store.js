@@ -71,13 +71,10 @@ export default new Vuex.Store({
 
     getArticles({commit, state}) {
       
-      axios.get('/api/articles', {
-        headers: {
-          "Authorization": `Bearer ${state.currentUser.user.token}`
-        }
-      })
+      axios.get('/api/articles')
             .then(function (response) {
               // handle success
+              
               commit('updateArticles', response.data.articles);
             })
             .catch(function (error) {
@@ -88,25 +85,18 @@ export default new Vuex.Store({
 
     storeArticle ({commit, state}, article) {
     
-        axios.post('http://localhost:8000/api/articles', article, {
-          headers: {
-            "Authorization": `Bearer ${state.currentUser.user.token}`
-          } 
-        })
+        axios.post('http://localhost:8000/api/articles', article)
           .then(res => console.log(res))
           .catch(error => console.log(error))
     },
 
     getArticle({commit, state}, article){
      
-      axios.get('/api/articles/'+ article, {
-        headers: {
-          "Authorization": `Bearer ${state.currentUser.user.token}`
-        }
-      })
+      axios.get('/api/articles/'+ article)
             .then(function (response) {
               // handle success
-              console.log(response.data);
+              // console.log(response.data);
+              // console.log(response.data.article)
               commit('updateArticle', response.data.article);
             })
             .catch(function (error) {
@@ -117,11 +107,7 @@ export default new Vuex.Store({
 
     updateArticle({commit, state}, article){
       console.log(article);
-      axios.put('/api/articles/'+article.id, article, {
-        headers: {
-          "Authorization": `Bearer ${state.currentUser.user.token}`
-        }
-      })
+      axios.put('/api/articles/'+article.id, article)
       .then(function (response) {
         // handle success
         console.log(response.data);
@@ -139,6 +125,7 @@ export default new Vuex.Store({
       },
 
       article(state) {
+        console.log(state.article);
         return state.article;
       },
 

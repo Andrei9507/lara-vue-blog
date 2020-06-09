@@ -39,6 +39,7 @@ export default {
         name:'list',
         mounted() {
                 this.$store.dispatch('getArticles');
+                
         },
         computed: {
                 articles() {

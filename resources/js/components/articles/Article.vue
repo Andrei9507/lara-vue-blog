@@ -29,13 +29,27 @@
 export default {
         
         created() {
-                
-                this.$store.dispatch('getArticle', this.$route.params.id);
+                // if(this.articles.length) {
+                //         this.article = this.articles.find((article) => articles.id == this.$route.params.id);
+                // } else {
+                        // repair this to dont make one more request
+                        this.$store.dispatch('getArticle', this.$route.params.id);
+                // }
         },
+        // data(){
+        //         // return {
+        //         //         article: null
+        //         // };
+        // },
          computed: {
                 article() {
                         return this.$store.getters.article;
+                },
+                articles() {
+                        return this.$store.getters.articles;
                 }
+
+
         }
         
 }

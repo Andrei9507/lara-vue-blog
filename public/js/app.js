@@ -2051,11 +2051,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
-    this.$store.dispatch('getArticle', this.$route.params.id);
+    // if(this.articles.length) {
+    //         this.article = this.articles.find((article) => articles.id == this.$route.params.id);
+    // } else {
+    // repair this to dont make one more request
+    this.$store.dispatch('getArticle', this.$route.params.id); // }
   },
+  // data(){
+  //         // return {
+  //         //         article: null
+  //         // };
+  // },
   computed: {
     article: function article() {
       return this.$store.getters.article;
+    },
+    articles: function articles() {
+      return this.$store.getters.articles;
     }
   }
 });
@@ -2146,33 +2158,48 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'edit',
-  data: function data() {
-    return {
-      title: '',
-      description: ''
-    };
-  },
-  mounted: function mounted() {
-    this.$store.dispatch('getArticle', this.$route.params.id);
-  },
-  // validations: {
-  //         title: {
-  //                 required,
-  //                 minLen: minLength(5)
-  //         },
-  //         description: {
-  //                 required,
-  //                 minLen: minLength(50)
+  // data() {
+  //         return {
+  //                 article: null
+  // // ADD IN FORM VALIDATION FROM VUELIDATE !!!!
   //         }
   // },
+  created: function created() {
+    this.$store.dispatch('getArticle', this.$route.params.id); // this.article = this.$store.getters.article;
+    // console.log(this.$store.getters.article)
+    // this.art.title=this.$store.getters.article.title;
+    // this.art.description=this.$store.getters.article.description;
+  },
   computed: {
-    article: function article() {
-      return this.$store.getters.article;
+    article: {
+      get: function get() {
+        return this.$store.state.article;
+      }
     }
   },
+  validations: {
+    article: {
+      title: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
+        minLen: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(5)
+      },
+      description: {
+        required: vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["required"],
+        minLen: Object(vuelidate_lib_validators__WEBPACK_IMPORTED_MODULE_0__["minLength"])(50)
+      }
+    }
+  },
+  // computed: {
+  //         article() {
+  //                 return this.$store.getters.article;
+  //         },
+  // },
   methods: {
     onUpdate: function onUpdate() {
       var article = {
@@ -38963,6 +38990,9 @@ var render = function() {
               attrs: { type: "text", id: "title", placeholder: "title" },
               domProps: { value: _vm.article.title },
               on: {
+                blur: function($event) {
+                  return _vm.$v.article.title.$touch()
+                },
                 input: function($event) {
                   if ($event.target.composing) {
                     return
@@ -38970,7 +39000,15 @@ var render = function() {
                   _vm.$set(_vm.article, "title", $event.target.value)
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            !_vm.$v.article.title.minLen
+              ? _c("p", [_vm._v("Please insert minim 5 character")])
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.$v.article.title.required
+              ? _c("p", [_vm._v("This field must not be empty ")])
+              : _vm._e()
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "form-group" }, [
@@ -39002,7 +39040,15 @@ var render = function() {
                   _vm.$set(_vm.article, "description", $event.target.value)
                 }
               }
-            })
+            }),
+            _vm._v(" "),
+            !_vm.$v.article.description.required
+              ? _c("p", [_vm._v("This field must not be empty ")])
+              : _vm._e(),
+            _vm._v(" "),
+            !_vm.$v.article.description.minLen
+              ? _c("p", [_vm._v("Please insert more text")])
+              : _vm._e()
           ]),
           _vm._v(" "),
           _c(
@@ -57646,10 +57692,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
 /* harmony import */ var _components_Navbar_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/Navbar.vue */ "./resources/js/components/Navbar.vue");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
-/* harmony import */ var _helpers_authChecks__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./helpers/authChecks */ "./resources/js/helpers/authChecks.js");
-/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
-/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var _helpers_authChecks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./helpers/authChecks */ "./resources/js/helpers/authChecks.js");
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
+/* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -57660,20 +57706,20 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_7___default.a);
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuelidate__WEBPACK_IMPORTED_MODULE_6___default.a);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('navbar', _components_Navbar_vue__WEBPACK_IMPORTED_MODULE_4__["default"]);
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: _routes__WEBPACK_IMPORTED_MODULE_3__["routes"],
   mode: 'history'
 });
-Object(_helpers_authChecks__WEBPACK_IMPORTED_MODULE_6__["initialize"])(_store__WEBPACK_IMPORTED_MODULE_5__["default"], router); // Continue with view article and tutorial
+Object(_helpers_authChecks__WEBPACK_IMPORTED_MODULE_5__["initialize"])(_store__WEBPACK_IMPORTED_MODULE_7__["default"], router); // Continue with view article and tutorial
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
-  router: router,
-  store: _store__WEBPACK_IMPORTED_MODULE_5__["default"]
+  store: _store__WEBPACK_IMPORTED_MODULE_7__["default"],
+  router: router
 });
 
 /***/ }),
@@ -58407,9 +58453,8 @@ function initialize(store, router) {
     var requiresAuth = to.matched.some(function (record) {
       return record.meta.requiresAuth;
     });
-    var currentUser = store.state.currentUser;
-    console.log(requiresAuth);
-    console.log(currentUser);
+    var currentUser = store.state.currentUser; // console.log(requiresAuth);
+    // console.log( currentUser);
 
     if (requiresAuth && currentUser.user == null) {
       next('/login');
@@ -58427,6 +58472,19 @@ function initialize(store, router) {
     }
 
     return Promise.reject(error);
+  }); //       this one sets generic header with token to avoid error for login page request
+
+  axios.interceptors.request.use(function (config) {
+    var user = JSON.parse(localStorage.getItem("user")); //     console.log('user:',  user);
+
+    if (user) {
+      config.headers['Authorization'] = "Bearer ".concat(user.token);
+    } // config.headers['Content-Type'] = 'application/json';
+
+
+    return config;
+  }, function (error) {
+    Promise.reject(error);
   });
 }
 
@@ -58584,11 +58642,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     getArticles: function getArticles(_ref3) {
       var commit = _ref3.commit,
           state = _ref3.state;
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/articles', {
-        headers: {
-          "Authorization": "Bearer ".concat(state.currentUser.user.token)
-        }
-      }).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/articles').then(function (response) {
         // handle success
         commit('updateArticles', response.data.articles);
       })["catch"](function (error) {
@@ -58599,11 +58653,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     storeArticle: function storeArticle(_ref4, article) {
       var commit = _ref4.commit,
           state = _ref4.state;
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://localhost:8000/api/articles', article, {
-        headers: {
-          "Authorization": "Bearer ".concat(state.currentUser.user.token)
-        }
-      }).then(function (res) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://localhost:8000/api/articles', article).then(function (res) {
         return console.log(res);
       })["catch"](function (error) {
         return console.log(error);
@@ -58612,13 +58662,10 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     getArticle: function getArticle(_ref5, article) {
       var commit = _ref5.commit,
           state = _ref5.state;
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/articles/' + article, {
-        headers: {
-          "Authorization": "Bearer ".concat(state.currentUser.user.token)
-        }
-      }).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/articles/' + article).then(function (response) {
         // handle success
-        console.log(response.data);
+        // console.log(response.data);
+        // console.log(response.data.article)
         commit('updateArticle', response.data.article);
       })["catch"](function (error) {
         // handle error
@@ -58629,11 +58676,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       var commit = _ref6.commit,
           state = _ref6.state;
       console.log(article);
-      axios__WEBPACK_IMPORTED_MODULE_2___default.a.put('/api/articles/' + article.id, article, {
-        headers: {
-          "Authorization": "Bearer ".concat(state.currentUser.user.token)
-        }
-      }).then(function (response) {
+      axios__WEBPACK_IMPORTED_MODULE_2___default.a.put('/api/articles/' + article.id, article).then(function (response) {
         // handle success
         console.log(response.data);
         commit('updateArticle', response.data.article);
@@ -58648,6 +58691,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       return state.articles;
     },
     article: function article(state) {
+      console.log(state.article);
       return state.article;
     },
     isLoading: function isLoading(state) {

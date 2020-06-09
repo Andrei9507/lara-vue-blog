@@ -7,13 +7,13 @@ import Vuex from 'vuex'
 
 import {routes} from './routes';
 import Navbar from './components/Navbar.vue';
-import store from './store'
 import {initialize} from './helpers/authChecks';
 import Vuelidate from 'vuelidate';
+import store from './store'
 
-Vue.use(Vuelidate);
-Vue.use(VueRouter);
 Vue.use(Vuex);
+Vue.use(VueRouter);
+Vue.use(Vuelidate);
 Vue.component('navbar', Navbar);
 
 const router = new VueRouter({
@@ -30,6 +30,6 @@ initialize(store, router);
 
 const app = new Vue({
         el: '#app',
-        router,
-        store
+        store,
+        router
 });
