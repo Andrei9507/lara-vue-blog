@@ -63,7 +63,9 @@ export default new Vuex.Store({
 
     getAuthors(state, payload) {
       state.authors = payload;
-    }
+    },
+
+
   },
   actions: {
 
@@ -105,7 +107,8 @@ export default new Vuex.Store({
             .then(function (response) {
               // handle success
               // console.log(response.data);
-              // console.log(response.data.article)
+              // console.log(response.data.article.comments[0].user.name)
+
               commit('updateArticle', response.data.article);
             })
             .catch(function (error) {
@@ -139,7 +142,8 @@ export default new Vuex.Store({
               // handle error
               console.log(error);
             })
-    }
+    },
+
   },
   getters:{
       authors(state){
@@ -151,7 +155,7 @@ export default new Vuex.Store({
       },
 
       article(state) {
-        console.log(state.article);
+        // console.log(state.article);
         return state.article;
       },
 

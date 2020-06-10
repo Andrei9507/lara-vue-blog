@@ -2059,20 +2059,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     // if(this.articles.length) {
     //         this.article = this.articles.find((article) => articles.id == this.$route.params.id);
     // } else {
     // repair this to dont make one more
-    this.$store.dispatch('getArticle', this.$route.params.id);
-    this.$store.dispatch('getAuthors'); // console.log('this'+this.$store.getters.articles);
+    this.$store.dispatch('getArticle', this.$route.params.id); // console.log('this'+this.$store.getters.articles);
     // }
-  },
-  data: function data() {
-    return {
-      author: ''
-    };
   },
   computed: {
     article: function article() {
@@ -2083,14 +2081,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     comments: function comments() {
       return this.$store.getters.article.comments;
-    },
-    authors: function authors() {
-      return this.$store.getters.authors;
-    } // author(){
-    //         return this.$store.getters.authors.find((author) => author.id == this.$store.getters.article.comments.user_id )
-    //         console.log("hello", author)
-    // }
-
+    }
   }
 });
 
@@ -38929,39 +38920,19 @@ var render = function() {
           ]),
           _vm._v(" "),
           _vm._l(_vm.comments, function(comment) {
-            return _c(
-              "p",
-              { key: comment.id },
-              [
-                _vm._v(
+            return _c("p", { key: comment.id }, [
+              _vm._v(
+                "\n                " +
+                  _vm._s(comment.comment) +
                   "\n                " +
-                    _vm._s(comment.comment) +
-                    "\n                "
-                ),
-                _c("br"),
-                _vm._v(
-                  "\n                " +
-                    _vm._s(
-                      (_vm.author = _vm.authors.find(function(author) {
-                        return author.id == comment.user_id
-                      }))
-                    ) +
-                    "\n                "
-                ),
-                _c("br"),
-                _vm._v(" "),
-                _vm.author
-                  ? [
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(_vm.author.name) +
-                          " \n                "
-                      )
-                    ]
-                  : _vm._e()
-              ],
-              2
-            )
+                  _vm._s(comment.user.name) +
+                  "\n                "
+              ),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("br")
+            ])
           }),
           _vm._v(" "),
           _c(
@@ -58734,7 +58705,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/articles/' + article).then(function (response) {
         // handle success
         // console.log(response.data);
-        // console.log(response.data.article)
+        // console.log(response.data.article.comments[0].user.name)
         commit('updateArticle', response.data.article);
       })["catch"](function (error) {
         // handle error
@@ -58774,7 +58745,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       return state.articles;
     },
     article: function article(state) {
-      console.log(state.article);
+      // console.log(state.article);
       return state.article;
     },
     isLoading: function isLoading(state) {

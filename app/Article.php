@@ -25,7 +25,7 @@ class Article extends Model
 
     public function getItem($id)
     {
-        return $this->with('comments')->find($id);
+        return $this->with('comments.user')->find($id);
     }
 
     public function comments()

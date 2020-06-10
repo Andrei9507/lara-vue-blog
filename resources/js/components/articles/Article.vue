@@ -22,12 +22,16 @@
                 </div>
                 <p v-for="comment in comments" :key="comment.id">
                         {{comment.comment}}
+                        {{comment.user.name}}
+                        <!-- {{comment.comment.user.name}} -->
+                        <!-- {{comment.comment.user['name']}} -->
+
+
                         <br>
-                        {{author = authors.find((author) => author.id == comment.user_id)}}
+                        <!-- {{author = authors.find((author) => author.id == comment.user_id)}} -->
                         <br>
-                        <template v-if="author">
-                        {{author.name}} 
-                        </template>
+                        <!-- find a way to solve infinite loop from here -->
+                     
                 </p>
                 <!-- <p v-for="author in authors" :key="author.id+10">{{author.name}}</p> -->
 
@@ -44,14 +48,9 @@ export default {
                 // } else {
                         // repair this to dont make one more
                         this.$store.dispatch('getArticle', this.$route.params.id);
-                        this.$store.dispatch('getAuthors');
+                      
                 // console.log('this'+this.$store.getters.articles);
                 // }
-        },
-        data() {
-                return {
-                        author: ''
-                };
         },
          computed: {
                 article() {
@@ -63,16 +62,9 @@ export default {
                 comments(){
                         return this.$store.getters.article.comments;
                 },
-                authors(){
-                        return this.$store.getters.authors;
-                }, 
-                // author(){
-                //         return this.$store.getters.authors.find((author) => author.id == this.$store.getters.article.comments.user_id )
-                //         console.log("hello", author)
-                // }
-
-
-        }
+              
+        },
+        
         
 }
 </script>

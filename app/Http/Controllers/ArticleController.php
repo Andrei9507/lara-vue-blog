@@ -22,6 +22,7 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = $this->article->getAll();
+        
         return response()->json([
             "articles" => $articles
         ], 200);
@@ -106,7 +107,6 @@ class ArticleController extends Controller
     public function get($id)
     {
         $article =  $this->article->getItem($id);
-
         return response()->json([
             'article' => $article
         ], 200);
