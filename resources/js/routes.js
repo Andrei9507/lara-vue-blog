@@ -6,7 +6,7 @@ import NewArticle from './components/articles/New.vue';
 import EditArticle from './components/articles/Edit.vue';
 import Article from './components/articles/Article.vue';
 import Login from './components/auth/Login.vue';
-import store from './store';
+import store from './store/store';
 
 
 export const routes =  [

@@ -9,7 +9,7 @@ import {routes} from './routes';
 import Navbar from './components/Navbar.vue';
 import {initialize} from './helpers/authChecks';
 import Vuelidate from 'vuelidate';
-import store from './store'
+import store from './store/store'
 
 Vue.use(Vuex);
 Vue.use(VueRouter);

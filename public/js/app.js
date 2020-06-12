@@ -2063,6 +2063,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {
     // if(this.articles.length) {
@@ -2081,6 +2085,15 @@ __webpack_require__.r(__webpack_exports__);
     },
     comments: function comments() {
       return this.$store.getters.article.comments;
+    },
+    addCommentArticle: function addCommentArticle() {
+      return this.$store.getters.addCommentArticle;
+    }
+  },
+  methods: {
+    addCommentOpen: function addCommentOpen() {
+      this.$store.commit('addCommentArticle');
+      return this.$store.getters.addCommentArticle;
     }
   }
 });
@@ -2220,7 +2233,11 @@ __webpack_require__.r(__webpack_exports__);
         title: this.article.title,
         description: this.article.description
       };
-      this.$store.dispatch('updateArticle', article);
+      this.$store.dispatch('updateArticle', article); // Vue.set(state.articles, article.id, article)
+      // this.$store.state.articles.splice(article.id , 1, article)
+      // this.$store.state.articles.$set( this.$store.state.articles, article.id, article)
+      // this.$store.commit('updateArticle',article);
+
       this.$router.push('/articles');
     }
   }
@@ -38919,6 +38936,19 @@ var render = function() {
             _c("div", [_vm._v(_vm._s(_vm.article.description))])
           ]),
           _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-info",
+              on: {
+                click: function($event) {
+                  return _vm.addCommentOpen()
+                }
+              }
+            },
+            [_vm._v("Add Comment ")]
+          ),
+          _vm._v(" "),
           _vm._l(_vm.comments, function(comment) {
             return _c("p", { key: comment.id }, [
               _vm._v(
@@ -38934,6 +38964,14 @@ var render = function() {
               _c("br")
             ])
           }),
+          _vm._v(" "),
+          _vm.addCommentArticle
+            ? _c("p", [
+                _vm._v(
+                  "\n                I am the new add component tempalte\n        "
+                )
+              ])
+            : _vm._e(),
           _vm._v(" "),
           _c(
             "router-link",
@@ -39157,8 +39195,8 @@ var render = function() {
         [
           !_vm.articles.length
             ? [_vm._m(1)]
-            : _vm._l(_vm.articles, function(article) {
-                return _c("tr", { key: article.id }, [
+            : _vm._l(_vm.articles, function(article, i) {
+                return _c("tr", { key: i }, [
                   _c("td", [
                     _vm._v(
                       "\n                                                " +
@@ -57730,7 +57768,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_authChecks__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./helpers/authChecks */ "./resources/js/helpers/authChecks.js");
 /* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vuelidate */ "./node_modules/vuelidate/lib/index.js");
 /* harmony import */ var vuelidate__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(vuelidate__WEBPACK_IMPORTED_MODULE_6__);
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./store/store */ "./resources/js/store/store.js");
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 
@@ -57749,11 +57787,11 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
   routes: _routes__WEBPACK_IMPORTED_MODULE_3__["routes"],
   mode: 'history'
 });
-Object(_helpers_authChecks__WEBPACK_IMPORTED_MODULE_5__["initialize"])(_store__WEBPACK_IMPORTED_MODULE_7__["default"], router); // Continue with view article and tutorial
+Object(_helpers_authChecks__WEBPACK_IMPORTED_MODULE_5__["initialize"])(_store_store__WEBPACK_IMPORTED_MODULE_7__["default"], router); // Continue with view article and tutorial
 
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
-  store: _store__WEBPACK_IMPORTED_MODULE_7__["default"],
+  store: _store_store__WEBPACK_IMPORTED_MODULE_7__["default"],
   router: router
 });
 
@@ -58543,7 +58581,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_articles_Edit_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/articles/Edit.vue */ "./resources/js/components/articles/Edit.vue");
 /* harmony import */ var _components_articles_Article_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/articles/Article.vue */ "./resources/js/components/articles/Article.vue");
 /* harmony import */ var _components_auth_Login_vue__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/auth/Login.vue */ "./resources/js/components/auth/Login.vue");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./store */ "./resources/js/store.js");
+/* harmony import */ var _store_store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./store/store */ "./resources/js/store/store.js");
 
 
 
@@ -58596,10 +58634,10 @@ var routes = [{
 
 /***/ }),
 
-/***/ "./resources/js/store.js":
-/*!*******************************!*\
-  !*** ./resources/js/store.js ***!
-  \*******************************/
+/***/ "./resources/js/store/store.js":
+/*!*************************************!*\
+  !*** ./resources/js/store/store.js ***!
+  \*************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -58610,7 +58648,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _helpers_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./helpers/auth */ "./resources/js/helpers/auth.js");
+/* harmony import */ var _helpers_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/auth */ "./resources/js/helpers/auth.js");
 
 
 
@@ -58627,6 +58665,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     // !! bcs cast in boolean
     loading: false,
     auth_error: null,
+    addCommentOpen: false,
     articles: [],
     article: null,
     authors: []
@@ -58662,11 +58701,23 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     addStoredArticleToArray: function addStoredArticleToArray(state, article) {
       state.articles.push(article);
     },
-    updateArticle: function updateArticle(state, article) {
-      state.article = article;
+    updateArticle: function updateArticle(state, payload) {
+      // console.log(payload);
+      state.article = payload; // Vue.set(state.articles, payload.id, payload)
+      // this.article = state.articles.find((article) => articles.id == payload.id);
+    },
+    updateArrayOfArticles: function updateArrayOfArticles(state, payload) {
+      // console.log(payload);
+      /// this start from -1 bcs array start form 0
+      state.articles.splice(payload.id - 1, 1, payload);
     },
     getAuthors: function getAuthors(state, payload) {
       state.authors = payload;
+    },
+    addCommentArticle: function addCommentArticle(state) {
+      console.log(state.addCommentOpen);
+      state.addCommentOpen = true;
+      console.log(state.addCommentOpen);
     }
   },
   actions: {
@@ -58715,11 +58766,10 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     updateArticle: function updateArticle(_ref6, article) {
       var commit = _ref6.commit,
           state = _ref6.state;
-      // console.log(article);
+      console.log(state.articles[0]); // console.log(article);
+
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.put('/api/articles/' + article.id, article).then(function (response) {
-        // handle success
-        // console.log(response.data);
-        commit('updateArticle', response.data.article);
+        commit('updateArrayOfArticles', response.data);
       })["catch"](function (error) {
         // handle error
         console.log(error);
@@ -58735,7 +58785,10 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
         // handle error
         console.log(error);
       });
-    }
+    } // addCommentAccess({commit}) {
+    //   commit
+    // }
+
   },
   getters: {
     authors: function authors(state) {
@@ -58745,7 +58798,6 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       return state.articles;
     },
     article: function article(state) {
-      // console.log(state.article);
       return state.article;
     },
     isLoading: function isLoading(state) {
@@ -58759,6 +58811,9 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     },
     authError: function authError(state) {
       return state.auth_error;
+    },
+    addCommentArticle: function addCommentArticle(state) {
+      return state.addComment;
     }
   }
 }));

@@ -20,6 +20,8 @@
                         <label for="description">Description</label>
                         <div>{{article.description}}</div>
                 </div>
+                <button @click="addCommentOpen()" class="btn btn-info">Add Comment </button>
+                
                 <p v-for="comment in comments" :key="comment.id">
                         {{comment.comment}}
                         {{comment.user.name}}
@@ -35,7 +37,9 @@
                 </p>
                 <!-- <p v-for="author in authors" :key="author.id+10">{{author.name}}</p> -->
 
-              
+                <p v-if="addCommentArticle">
+                        I am the new add component tempalte
+                </p>
                 <router-link to="/articles" class="btn btn-danger">Back</router-link>
         </div>
 </template>
@@ -62,8 +66,20 @@ export default {
                 comments(){
                         return this.$store.getters.article.comments;
                 },
+                addCommentArticle()
+                {
+                        return this.$store.getters.addCommentArticle;
+                }
               
         },
+
+        methods: {
+                addCommentOpen() {
+
+                        this.$store.commit('addCommentArticle');
+                        return this.$store.getters.addCommentArticle;
+                }
+        }
         
         
 }

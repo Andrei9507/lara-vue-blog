@@ -16,7 +16,7 @@
                                         </tr>
                                 </template>
                                 <template v-else>
-                                        <tr v-for="article in articles" :key="article.id">
+                                        <tr v-for="(article,i) in articles" :key="i">
                                                 <td>
                                                         {{article.title}}
                                                 </td>
@@ -25,7 +25,7 @@
                                                 </td>
                                                 <td>
                                                         <router-link :to="`/articles/${article.id}`">View</router-link>
-                                                         <router-link :to="`/articles/edit/${article.id}`">Edit</router-link>
+                                                        <router-link :to="`/articles/edit/${article.id}`">Edit</router-link>
                                                 </td>
                                         </tr>
                                 </template>
