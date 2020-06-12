@@ -29,9 +29,10 @@ Route::group([ 'middleware' => 'jwt.auth' ], function ($router) {
     Route::post('articles', 'ArticleController@store');
     Route::put('articles/{article}', 'ArticleController@update');
     Route::get('users', 'UserController@index');
+    Route::get('articles/{id}', 'ArticleController@get');
+    Route::post('comments', 'CommentController@store');
     
 });
-Route::get('articles/{id}', 'ArticleController@get');
 
 // Route::get('quantities', ['middleware' => 'cors' , 'quantities'=> 'QuantityController@index']);
 // quantities routes

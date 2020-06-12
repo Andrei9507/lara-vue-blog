@@ -20,8 +20,10 @@
                         <label for="description">Description</label>
                         <div>{{article.description}}</div>
                 </div>
-                <button @click="addCommentOpen()" class="btn btn-info">Add Comment </button>
-                
+                <button @click="addCommentOpen()" class="btn btn-info"  v-if="!addCommentArticle">Add Comment </button>
+                <!-- <p > -->
+                        <new-comment v-if="addCommentArticle"></new-comment>
+                <!-- </p> -->
                 <p v-for="comment in comments" :key="comment.id">
                         {{comment.comment}}
                         {{comment.user.name}}
@@ -37,13 +39,13 @@
                 </p>
                 <!-- <p v-for="author in authors" :key="author.id+10">{{author.name}}</p> -->
 
-                <p v-if="addCommentArticle">
-                        I am the new add component tempalte
-                </p>
+                
                 <router-link to="/articles" class="btn btn-danger">Back</router-link>
         </div>
 </template>
 <script>
+import NewComment from '../comments/New.vue';
+
 export default {
         
         created() {
@@ -76,9 +78,12 @@ export default {
         methods: {
                 addCommentOpen() {
 
-                        this.$store.commit('addCommentArticle');
-                        return this.$store.getters.addCommentArticle;
+                        this.$store.commit('openAddCommentArticle');
+                        // return this.$store.getters.openAddCommentArticle;
                 }
+        },
+        components: {
+                NewComment
         }
         
         
