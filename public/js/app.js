@@ -2070,6 +2070,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  // no need this atm
   created: function created() {
     // if(this.articles.length) {
     //         this.article = this.articles.find((article) => articles.id == this.$route.params.id);
@@ -2082,20 +2083,19 @@ __webpack_require__.r(__webpack_exports__);
     article: function article() {
       return this.$store.getters.article;
     },
-    articles: function articles() {
-      return this.$store.getters.articles;
-    },
-    comments: function comments() {
-      return this.$store.getters.article.comments;
-    },
+    // articles() {
+    //         return this.$store.getters.articles;
+    // },
+    // comments(){
+    //         return this.$store.getters.article.comments;
+    // },
     addCommentArticle: function addCommentArticle() {
       return this.$store.getters.addCommentArticle;
     }
   },
   methods: {
     addCommentOpen: function addCommentOpen() {
-      this.$store.commit('openAddCommentArticle');
-      return this.$store.getters.openAddCommentArticle;
+      this.$store.commit('openAddCommentArticle'); // return this.$store.getters.openAddCommentArticle;
     }
   },
   components: {
@@ -2259,6 +2259,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
 //
 //
 //
@@ -2526,9 +2530,8 @@ __webpack_require__.r(__webpack_exports__);
         comment: this.formData.comment,
         article_id: this.$route.params.id,
         user_id: this.author.id
-      }; // console.log(comm);
-
-      this.$store.dispatch('storeComment', comm); // this.$store.commit('closeAddCommentArticle');
+      };
+      this.$store.dispatch('storeComment', comm);
     },
     cancelAddComment: function cancelAddComment() {
       this.$store.commit('closeAddCommentArticle');
@@ -39013,7 +39016,7 @@ var render = function() {
           _vm._v(" "),
           _vm.addCommentArticle ? _c("new-comment") : _vm._e(),
           _vm._v(" "),
-          _vm._l(_vm.comments, function(comment) {
+          _vm._l(_vm.article.comments, function(comment) {
             return _c("p", { key: comment.id }, [
               _vm._v(
                 "\n                " +
@@ -39269,6 +39272,14 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
+                  _c("td", [
+                    _vm._v(
+                      "\n                                                " +
+                        _vm._s(article.user.name) +
+                        "\n                                        "
+                    )
+                  ]),
+                  _vm._v(" "),
                   _c(
                     "td",
                     [
@@ -39303,6 +39314,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Title")]),
       _vm._v(" "),
       _c("th", [_vm._v("Description")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Author")]),
       _vm._v(" "),
       _c("th", [_vm._v("Actions")])
     ])
@@ -58864,9 +58877,7 @@ var state = {
 };
 var mutations = {
   openAddCommentArticle: function openAddCommentArticle(state) {
-    console.log(state.addCommentOpen);
     state.addCommentOpen = true;
-    console.log(state.addCommentOpen);
   },
   closeAddCommentArticle: function closeAddCommentArticle(state) {
     state.addCommentOpen = false;
@@ -58877,7 +58888,7 @@ var actions = {
     var commit = _ref.commit,
         state = _ref.state;
     axios__WEBPACK_IMPORTED_MODULE_0___default.a.post('/api/comments', comment).then(function (response) {
-      console.log('From response after axios post', response);
+      //        commit for modify frontend array
       commit('addStoredArticleCommentToArray', response.data.comment);
       commit('closeAddCommentArticle');
     })["catch"](function (error) {
@@ -58962,27 +58973,19 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       state.currentUser = null;
     },
     updateArticles: function updateArticles(state, payload) {
-      state.articles = payload; // console.log(state.articles)
+      state.articles = payload;
     },
     addStoredArticleToArray: function addStoredArticleToArray(state, article) {
       state.articles.push(article);
     },
     addStoredArticleCommentToArray: function addStoredArticleCommentToArray(state, comment) {
-      console.log(comment);
       state.article.comments.push(comment);
-      console.log(state.article.comments); // console.log("From Store Add stored article comment: ", payload)
-      // state.article.comments.length = 0;  
-      // replace comments with payload
-      // state.article.comments.push.apply(state.article.comments, payload);
-      // console.log(state.article.comments);
     },
     updateArticle: function updateArticle(state, payload) {
-      // console.log(payload);
-      state.article = payload; // Vue.set(state.articles, payload.id, payload)
-      // this.article = state.articles.find((article) => articles.id == payload.id);
+      // console.log(payload)
+      state.article = payload;
     },
     updateArrayOfArticles: function updateArrayOfArticles(state, payload) {
-      // console.log(payload);
       /// this start from -1 bcs array start form 0
       state.articles.splice(payload.id - 1, 1, payload);
     },
@@ -59004,6 +59007,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
           state = _ref3.state;
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/articles').then(function (response) {
         // handle success
+        // console.log(response.data.articles);
         commit('updateArticles', response.data.articles);
       })["catch"](function (error) {
         // handle error
@@ -59023,10 +59027,12 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     getArticle: function getArticle(_ref5, article) {
       var commit = _ref5.commit,
           state = _ref5.state;
+      console.log(article);
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/articles/' + article).then(function (response) {
         // handle success
         // console.log(response.data);
         // console.log(response.data.article.comments[0].user.name)
+        console.log(response);
         commit('updateArticle', response.data.article);
       })["catch"](function (error) {
         // handle error
@@ -59039,6 +59045,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       // console.log(state.articles[0])
       // console.log(article);
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.put('/api/articles/' + article.id, article).then(function (response) {
+        console.log(response);
         commit('updateArrayOfArticles', response.data);
       })["catch"](function (error) {
         // handle error

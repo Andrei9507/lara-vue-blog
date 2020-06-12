@@ -13,7 +13,7 @@ class Article extends Model
     public function getAll()
     {
         // return $this->with('product')->get();
-        return $this->with('comments')->get();
+        return $this->with('comments', 'user')->get();
     }
 
     public function saveItem($params)
@@ -21,6 +21,14 @@ class Article extends Model
         $new = $this->create($params);
         return $new;
 
+    }
+
+    public function updateItem($request, $article)
+    {
+        $article = $this->with('user')->find($article->id);
+
+        $article->update($request->all());
+        return $article;
     }
 
     public function getItem($id)
@@ -31,6 +39,11 @@ class Article extends Model
     public function comments()
     {
         return $this->hasMany('App\Comment');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
     }
 
     // public function commentOwner()

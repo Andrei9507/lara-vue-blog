@@ -24,7 +24,7 @@
                 <!-- <p > -->
                         <new-comment v-if="addCommentArticle"></new-comment>
                 <!-- </p> -->
-                <p v-for="comment in comments" :key="comment.id">
+                <p v-for="comment in article.comments" :key="comment.id">
                         {{comment.comment}}
                         {{comment.user.name}}
                         <!-- {{comment.comment.user.name}} -->
@@ -47,7 +47,7 @@
 import NewComment from '../comments/New.vue';
 
 export default {
-        
+        // no need this atm
         created() {
                 // if(this.articles.length) {
                 //         this.article = this.articles.find((article) => articles.id == this.$route.params.id);
@@ -62,12 +62,12 @@ export default {
                 article() {
                         return this.$store.getters.article;
                 },
-                articles() {
-                        return this.$store.getters.articles;
-                },
-                comments(){
-                        return this.$store.getters.article.comments;
-                },
+                // articles() {
+                //         return this.$store.getters.articles;
+                // },
+                // comments(){
+                //         return this.$store.getters.article.comments;
+                // },
                 addCommentArticle()
                 {
                         return this.$store.getters.addCommentArticle;

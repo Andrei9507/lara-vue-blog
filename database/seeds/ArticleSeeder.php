@@ -19,6 +19,7 @@ class ArticleSeeder extends Seeder
             Article::create([
                 'title' => Str::random(10),
                 'description' => Str::random(50),
+                'user_id' => 1,
             ]);
         }
     }

@@ -7,6 +7,7 @@
                         <thead>
                                 <th>Title</th>
                                 <th>Description</th>
+                                <th>Author</th>
                                 <th>Actions</th>
                         </thead>
                         <tbody>
@@ -22,6 +23,9 @@
                                                 </td>
                                                 <td>
                                                         {{article.description}}
+                                                </td>
+                                                <td>
+                                                        {{article.user.name}}
                                                 </td>
                                                 <td>
                                                         <router-link :to="`/articles/${article.id}`">View</router-link>
