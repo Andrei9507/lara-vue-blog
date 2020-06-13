@@ -2195,17 +2195,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'edit',
-  // data() {
-  //         return {
-  //                 article: null
-  // // ADD IN FORM VALIDATION FROM VUELIDATE !!!!
-  //         }
-  // },
   created: function created() {
-    this.$store.dispatch('getArticle', this.$route.params.id); // this.article = this.$store.getters.article;
-    // console.log(this.$store.getters.article)
-    // this.art.title=this.$store.getters.article.title;
-    // this.art.description=this.$store.getters.article.description;
+    this.$store.dispatch('getArticle', this.$route.params.id);
   },
   computed: {
     article: {
@@ -2226,11 +2217,6 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
-  // computed: {
-  //         article() {
-  //                 return this.$store.getters.article;
-  //         },
-  // },
   methods: {
     onUpdate: function onUpdate() {
       var article = {
@@ -2238,11 +2224,7 @@ __webpack_require__.r(__webpack_exports__);
         title: this.article.title,
         description: this.article.description
       };
-      this.$store.dispatch('updateArticle', article); // Vue.set(state.articles, article.id, article)
-      // this.$store.state.articles.splice(article.id , 1, article)
-      // this.$store.state.articles.$set( this.$store.state.articles, article.id, article)
-      // this.$store.commit('updateArticle',article);
-
+      this.$store.dispatch('updateArticle', article);
       this.$router.push('/articles');
     }
   }
@@ -2395,9 +2377,10 @@ __webpack_require__.r(__webpack_exports__);
     onSubmit: function onSubmit() {
       var article = {
         title: this.title,
-        description: this.description
-      };
-      console.log(article);
+        description: this.description,
+        user_id: this.$store.getters.currentUser.user.id
+      }; // console.log(article);
+
       this.$store.dispatch('storeArticle', article);
       this.$router.push('/articles');
     }
@@ -58982,7 +58965,6 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       state.article.comments.push(comment);
     },
     updateArticle: function updateArticle(state, payload) {
-      // console.log(payload)
       state.article = payload;
     },
     updateArrayOfArticles: function updateArrayOfArticles(state, payload) {
@@ -59007,7 +58989,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
           state = _ref3.state;
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.get('/api/articles').then(function (response) {
         // handle success
-        // console.log(response.data.articles);
+        console.log(response.data.articles);
         commit('updateArticles', response.data.articles);
       })["catch"](function (error) {
         // handle error
@@ -59018,7 +59000,7 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
       var commit = _ref4.commit,
           state = _ref4.state;
       axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('http://localhost:8000/api/articles', article).then(function (res) {
-        // console.log(res.data.article);
+        console.log(res.data.article);
         commit('addStoredArticleToArray', res.data.article);
       })["catch"](function (error) {
         return console.log(error);

@@ -67,9 +67,10 @@ export default {
 
                         const article = {
                               title: this.title,
-                              description: this.description
+                              description: this.description,
+                              user_id:this.$store.getters.currentUser.user.id
                         }
-                      console.log(article);
+                // console.log(article);
                       this.$store.dispatch('storeArticle', article)
                       this.$router.push('/articles');
               }

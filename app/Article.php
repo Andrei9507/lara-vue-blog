@@ -8,7 +8,7 @@ use App\Comment;
 class Article extends Model
 {
     protected $articles;
-    protected $fillable = ['title', 'description'];
+    protected $fillable = ['title', 'description', 'user_id'];
 
     public function getAll()
     {
@@ -19,6 +19,8 @@ class Article extends Model
     public function saveItem($params)
     {
         $new = $this->create($params);
+        $new = $this->getAll()->last();
+        
         return $new;
 
     }

@@ -48,7 +48,7 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        $article = Article::create($request->only(["title", "description"]));
+        $article = $this->article->saveItem($request->only(["title", "description", "user_id"]));
 
         return response()->json([
             "article" => $article
