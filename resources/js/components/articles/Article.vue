@@ -21,37 +21,32 @@
                         <div>{{article.description}}</div>
                 </div>
                 <button @click="addCommentOpen()" class="btn btn-info"  v-if="!addCommentArticle">Add Comment </button>
-                <!-- <p > -->
+               
                 <new-comment v-if="addCommentArticle"></new-comment>
                 <hr>
-                <!-- </p> -->
+                
                 <h2>Comments section</h2>
                 <div class="card mt-4" v-for="comment in article.comments" :key="comment.id">
-                        <!-- {{comment.comment}}
-                        {{comment.user.name}} -->
-                        <!-- {{comment.comment.user.name}} -->
-                        <!-- {{comment.comment.user['name']}} -->
-
-
-                        <!-- <br> -->
-                        <!-- {{author = authors.find((author) => author.id == comment.user_id)}} -->
-                        <!-- <br> -->
-                        <!-- find a way to solve infinite loop from here -->
+                     
                        
-                        <div class="card-header">
-                                Quote
-                        </div>
                         <div class="card-body">
+                                <button type="button"  v-if="comment.user.email == userEmail" @click="onDeleteComment(comment.id)" style="color:red" class="close" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                </button>
                                 <blockquote class="blockquote mb-0">
                                 <p>  {{comment.comment}}</p>
-                                <footer class="blockquote-footer">added by <cite title="Source Title"> {{comment.user.name}}</cite></footer>
+                                <footer class="blockquote-footer">added by 
+                                        <template v-if="comment.user.email == userEmail">
+                                                <cite title="Source Title"> you</cite>
+                                        </template>
+                                        <template v-else>
+                                                <cite title="Source Title"> {{comment.user.name}}</cite>
+                                        </template>
+                                </footer>
                                 </blockquote>
                         </div>
                         
                 </div>
-                <!-- <p v-for="author in authors" :key="author.id+10">{{author.name}}</p> -->
-
-                
                 <router-link to="/articles" class="btn btn-danger mt-4">Back</router-link>
         </div>
 </template>
@@ -59,7 +54,11 @@
 import NewComment from '../comments/New.vue';
 
 export default {
-        // no need this atm
+        data() {
+                return {
+                        userEmail: this.$store.getters.currentUser.user.email
+                };
+        },
         created() {
                 // if(this.articles.length) {
                 //         this.article = this.articles.find((article) => articles.id == this.$route.params.id);
@@ -91,7 +90,10 @@ export default {
                 addCommentOpen() {
 
                         this.$store.commit('openAddCommentArticle');
-                        // return this.$store.getters.openAddCommentArticle;
+                },
+
+                onDeleteComment(id){
+                        this.$store.dispatch('deleteComment', id);
                 }
         },
         components: {

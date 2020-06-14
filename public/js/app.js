@@ -2075,14 +2075,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  // no need this atm
+  data: function data() {
+    return {
+      userEmail: this.$store.getters.currentUser.user.email
+    };
+  },
   created: function created() {
     // if(this.articles.length) {
     //         this.article = this.articles.find((article) => articles.id == this.$route.params.id);
@@ -2107,7 +2106,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     addCommentOpen: function addCommentOpen() {
-      this.$store.commit('openAddCommentArticle'); // return this.$store.getters.openAddCommentArticle;
+      this.$store.commit('openAddCommentArticle');
+    },
+    onDeleteComment: function onDeleteComment(id) {
+      this.$store.dispatch('deleteComment', id);
     }
   },
   components: {
@@ -39059,20 +39061,50 @@ var render = function() {
           _vm._v(" "),
           _vm._l(_vm.article.comments, function(comment) {
             return _c("div", { key: comment.id, staticClass: "card mt-4" }, [
-              _c("div", { staticClass: "card-header" }, [
-                _vm._v("\n                        Quote\n                ")
-              ]),
-              _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
+                comment.user.email == _vm.userEmail
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        staticStyle: { color: "red" },
+                        attrs: { type: "button", "aria-label": "Close" },
+                        on: {
+                          click: function($event) {
+                            return _vm.onDeleteComment(comment.id)
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { attrs: { "aria-hidden": "true" } }, [
+                          _vm._v("×")
+                        ])
+                      ]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
                 _c("blockquote", { staticClass: "blockquote mb-0" }, [
                   _c("p", [_vm._v("  " + _vm._s(comment.comment))]),
                   _vm._v(" "),
-                  _c("footer", { staticClass: "blockquote-footer" }, [
-                    _vm._v("added by "),
-                    _c("cite", { attrs: { title: "Source Title" } }, [
-                      _vm._v(" " + _vm._s(comment.user.name))
-                    ])
-                  ])
+                  _c(
+                    "footer",
+                    { staticClass: "blockquote-footer" },
+                    [
+                      _vm._v("added by \n                                "),
+                      comment.user.email == _vm.userEmail
+                        ? [
+                            _c("cite", { attrs: { title: "Source Title" } }, [
+                              _vm._v(" you")
+                            ])
+                          ]
+                        : [
+                            _c("cite", { attrs: { title: "Source Title" } }, [
+                              _vm._v(" " + _vm._s(comment.user.name))
+                            ])
+                          ]
+                    ],
+                    2
+                  )
                 ])
               ])
             ])
@@ -58935,6 +58967,15 @@ var actions = {
     })["catch"](function (error) {
       console.log(error);
     });
+  },
+  deleteComment: function deleteComment(_ref2, id) {
+    var commit = _ref2.commit;
+    commit('remoreArticleCommentFromArray', id);
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a["delete"]('/api/comments/' + id).then(function (response) {
+      console.log(response);
+    })["catch"](function (error) {
+      console.log(error);
+    });
   }
 };
 var getters = {
@@ -59021,6 +59062,14 @@ var user = Object(_helpers_auth__WEBPACK_IMPORTED_MODULE_3__["getLocalUser"])();
     },
     addStoredArticleCommentToArray: function addStoredArticleCommentToArray(state, comment) {
       state.article.comments.push(comment);
+    },
+    remoreArticleCommentFromArray: function remoreArticleCommentFromArray(state, id) {
+      //remove item from array by id
+      for (var i = 0; i < state.article.comments.length; i++) {
+        if (state.article.comments[i].id === id) {
+          state.article.comments.splice(i, 1);
+        }
+      }
     },
     updateArticle: function updateArticle(state, payload) {
       state.article = payload;

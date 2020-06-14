@@ -31,6 +31,7 @@ Route::group([ 'middleware' => 'jwt.auth' ], function ($router) {
     Route::get('users', 'UserController@index');
     Route::get('articles/{id}', 'ArticleController@get');
     Route::post('comments', 'CommentController@store');
+    Route::delete('comments/{id}', 'CommentController@destroy');
     
 });
 
@@ -42,4 +43,3 @@ Route::post('quantities', 'QuantityController@store');
 Route::get('quantities-history/{day?}/{month?}/{year?}','QuantityController@history');
 // Route::get('events/{year?}/{month?}/{day?}', 'EventController@show')
 // products routes
-Route::delete('articles/{article}', 'ArticleController@delete');
